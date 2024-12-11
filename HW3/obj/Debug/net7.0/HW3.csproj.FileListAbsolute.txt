@@ -1,0 +1,15 @@
+C:\Code\oop\HW3\HW3\bin\Debug\net7.0\HW3.exe
+C:\Code\oop\HW3\HW3\bin\Debug\net7.0\HW3.deps.json
+C:\Code\oop\HW3\HW3\bin\Debug\net7.0\HW3.runtimeconfig.json
+C:\Code\oop\HW3\HW3\bin\Debug\net7.0\HW3.dll
+C:\Code\oop\HW3\HW3\bin\Debug\net7.0\HW3.pdb
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\HW3.csproj.AssemblyReference.cache
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\HW3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\HW3.AssemblyInfoInputs.cache
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\HW3.AssemblyInfo.cs
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\HW3.csproj.CoreCompileInputs.cache
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\HW3.dll
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\refint\HW3.dll
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\HW3.pdb
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\HW3.genruntimeconfig.cache
+C:\Code\oop\HW3\HW3\obj\Debug\net7.0\ref\HW3.dll
