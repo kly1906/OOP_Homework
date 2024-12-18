@@ -1,0 +1,165 @@
+using System;
+using System.Text;
+
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        Console.OutputEncoding = Encoding.UTF8;
+
+        NganHang nganHang = new NganHang(10);
+
+        // Mở tài khoản
+        TaiKhoanTietKiem taiKhoanAlice1 = new TaiKhoanTietKiem("001", "Alice", "901", 100, 5, 10);
+        TaiKhoanTietKiem taiKhoanBob = new TaiKhoanTietKiem("002", "Bob", "902", 50, 5, 10);
+        TaiKhoanTietKiem taiKhoanAlice2 = new TaiKhoanTietKiem("003", "Alice", "901", 200, 10, 10);
+        TaiKhoanTietKiem taiKhoanEve = new TaiKhoanTietKiem("004", "Eve", "903", 200, 10, 10);
+
+        // Mở tài khoản vào ngân hàng
+        nganHang.MoTaiKhoan(taiKhoanAlice1);
+        nganHang.MoTaiKhoan(taiKhoanBob);
+        nganHang.MoTaiKhoan(taiKhoanAlice2);
+        nganHang.MoTaiKhoan(taiKhoanEve);
+
+        // Giao dịch
+        taiKhoanAlice1.NhapTien(100, new DateTime(2005, 7, 15));
+        taiKhoanAlice1.NhapTien(100, new DateTime(2005, 7, 31));
+        taiKhoanBob.NhapTien(150, new DateTime(2005, 7, 1));
+        taiKhoanBob.NhapTien(150, new DateTime(2005, 7, 15));
+        taiKhoanAlice2.NhapTien(200, new DateTime(2005, 7, 5));
+        taiKhoanEve.NhapTien(250, new DateTime(2005, 7, 31));
+
+        taiKhoanAlice1.RutTien(10, new DateTime(2005, 7, 10));
+        taiKhoanBob.RutTien(20, new DateTime(2005, 7, 15));
+        taiKhoanAlice2.RutTien(30, new DateTime(2005, 7, 31));
+        taiKhoanEve.RutTien(40, new DateTime(2005, 7, 31));
+
+        // Tính lãi
+        taiKhoanAlice1.TinhLai();
+        taiKhoanBob.TinhLai();
+        taiKhoanAlice2.TinhLai();
+        taiKhoanEve.TinhLai();
+
+        // Xem danh sách tài khoản và giao dịch
+        nganHang.XemDanhSachTaiKhoan();
+        taiKhoanAlice1.XemDanhSachGiaoDich();
+        taiKhoanBob.XemDanhSachGiaoDich();
+        taiKhoanAlice2.XemDanhSachGiaoDich();
+        taiKhoanEve.XemDanhSachGiaoDich();
+    
+        Console.ReadKey();
+    }
+    abstract class TaiKhoan
+    {
+        public string SoTaiKhoan { get; set; }
+        public string TenTaiKhoan { get; set; }
+        public string CMND { get; set; }
+        public double SoTien { get; set; }
+        public double LaiSuat { get; set; }
+        public GiaoDich[] DanhSachGiaoDich { get; set; }
+        public int SoLuongGiaoDich { get; set; }
+
+        public TaiKhoan(string SoTaiKhoan, string TenTaiKhoan, string CMND, double SoTien, double LaiSuat, int SoLuongGiaoDich)
+        {
+            this.SoTaiKhoan = SoTaiKhoan;
+            this.TenTaiKhoan = TenTaiKhoan;
+            this.CMND = CMND;
+            this.SoTien = SoTien;
+            this.LaiSuat = LaiSuat;
+            this.DanhSachGiaoDich = new GiaoDich[SoLuongGiaoDich];
+            this.SoLuongGiaoDich = 0;
+        }
+
+        public abstract void NhapTien(double soTien, DateTime ngay);
+        public abstract void RutTien(double soTien, DateTime ngay);
+
+        public void TinhLai()
+        {
+            SoTien += SoTien * LaiSuat / 100;
+        }
+
+        public void XemDanhSachGiaoDich()
+        {
+            Console.WriteLine($"Danh sách giao dịch tài khoản {SoTaiKhoan}:");
+            for (int i = 0; i < SoLuongGiaoDich; i++)
+            {
+                Console.WriteLine(DanhSachGiaoDich[i]);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Số tài khoản: {SoTaiKhoan}, Chủ tài khoản: {this.TenTaiKhoan}, CMND: {this.CMND}, Số tiền hiện tại: {SoTien} Euros, Lãi suất: {LaiSuat}%";
+        }
+    }
+
+    class TaiKhoanTietKiem : TaiKhoan
+    {
+        public TaiKhoanTietKiem(string soTaiKhoan, string tenChuTaiKhoan, string soCMND, double soTien, double laiSuat, int soLuongGiaoDich)
+            : base(soTaiKhoan, tenChuTaiKhoan, soCMND, soTien, laiSuat, soLuongGiaoDich)
+        {
+        }
+
+        public override void NhapTien(double soTien, DateTime ngay)
+        {
+            this.SoTien += soTien;
+            DanhSachGiaoDich[SoLuongGiaoDich++] = new GiaoDich(ngay, "Nhập tiền", soTien);
+        }
+
+        public override void RutTien(double soTien, DateTime ngay)
+        {
+            if (this.SoTien >= soTien)
+            {
+                this.SoTien -= soTien;
+                DanhSachGiaoDich[SoLuongGiaoDich++] = new GiaoDich(ngay, "Rút tiền", soTien);
+            }
+            else
+            {
+                Console.WriteLine("Không đủ tiền để rút.");
+            }
+        }
+    }
+
+    class GiaoDich
+    {
+        public DateTime Ngay { get; set; }
+        public string LoaiGiaoDich { get; set; }
+        public double SoTien { get; set; }
+
+        public GiaoDich(DateTime ngay, string loaiGiaoDich, double soTien)
+        {
+            Ngay = ngay;
+            LoaiGiaoDich = loaiGiaoDich;
+            SoTien = soTien;
+        }
+
+        public override string ToString()
+        {
+            return $"{Ngay.ToShortDateString()} - {LoaiGiaoDich}: {SoTien} Euros";
+        }
+    }
+    class NganHang
+    {
+        public TaiKhoan[] DanhSachTaiKhoan { get; set; }
+        public int SoLuongTaiKhoan { get; set; }
+
+        public NganHang(int soLuongTaiKhoan)
+        {
+            DanhSachTaiKhoan = new TaiKhoan[soLuongTaiKhoan];
+            SoLuongTaiKhoan = 0;
+        }
+
+        public void MoTaiKhoan(TaiKhoan taiKhoan)
+        {
+            DanhSachTaiKhoan[SoLuongTaiKhoan++] = taiKhoan;
+        }
+
+        public void XemDanhSachTaiKhoan()
+        {
+            for (int i = 0; i < SoLuongTaiKhoan; i++)
+            {
+                Console.WriteLine(DanhSachTaiKhoan[i]);
+            }
+        }
+    }
+}
